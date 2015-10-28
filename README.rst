@@ -86,14 +86,16 @@ Installing Autolight-Photon is as simple as (running):
 * git clone git@github.com:alhopper/autolight-photon.git
 
 * Autolight requires the installation of some python library/module dependendies.  Install them as follows:
+::
 
-  * sudo pip install ephem
-  * sudo pip install librato-metrics
-  * sudo pip install apscheduler==2.1.2
+  sudo pip install ephem
+  sudo pip install librato-metrics
+  sudo pip install apscheduler==2.1.2
 
 * Install the relay application on the Photon using the particle.io tools
 
 * Sensitive data like the API key to access Librato and the keys used to access your Photon are stored in environment variables - rather than being hard-coded in the application code.  On a linux box (or the RPi), these environment variables are usually defined in $HOME/.bash_profile.   Here is a sample of what they should look like (using bogus values):
+::
 
   export LIBRATOKEY=abcdef1234abcdef1234abcdef2134234234234abcd23423423abcdef2134234
   export PHOTONID=233333333344444445555555
