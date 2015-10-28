@@ -1,6 +1,6 @@
-=========
-AutoLight
-=========
+================
+AutoLight-Photon
+================
 
 Introduction
 ------------
@@ -15,9 +15,11 @@ became clear that the only way to resolve my frustration was to
 calculate accurate times for Sunrise and Sunset and control the
 security light on/off times with this knowledge.
 
-Enter the Raspberry Pi (RPi) microcontroller and a couple of 
-high-quality accessories parts and some Python code.  Problem 
-solved!  :)
+Originally this code ran on a Raspberry Pi (RPi) and used the RPi digital
+outputs signals to send the on/off control to the Solid State Relay (SSR)
+board.  However, with the Photons clould API - this code can run anywhere
+there's a machine with out-bound access to the internet.  Currently this
+code is running in Googles Cloud (GCE) environment.
 
 Yes I know that there are commercial sunrise/sunset switches 
 available - but it's much more fun to build it yourself.
@@ -31,19 +33,15 @@ The RPi Sunrise/Sunset should meet the following goals; it should:
 
   * *solution:* use a Solid State Relay (SSR)
 
-* be able to keep time without an ethernet connection.
+* maintain accurate time
 
-  * *solution:* install a battery backed Real Time clock
+  * *solution* configure Network Time Protocol (NTP) on the server running the application.
 
-* keep time, even after power interruption.  
-
-  * *solution:* install a battery backed Real Time clock
-
-* given an ethernet connection, preferably WiFi, it should log its actions - preferably via an on-line logging service.
+* given an connection to the internet it should log its actions - preferably via an on-line logging service.
 
   * *solution:* use **PaperTrail** (see below)
 
-* given an ethernet connection, it should provide a visual *heartbeat*, preferably via an online service, so that it's *health* status can be quickly verified.
+* given an internet connection, it should provide a visual *heartbeat*, preferably via an online service, so that it's *health* status can be quickly verified.
 
   * *solution:* use **Librato** (see below)
 
@@ -69,25 +67,48 @@ This project would not be possible without the following *awesome* Python module
 Recommended Parts List
 ----------------------
 
-* RPi model A, if the ethernet hardware is not required. Otherwise use the Model B
-* RPi compaible WiFi USB dongle
-
-  * use anything RPi compatible that is *on-sale*!
+* RPi Model B with an ethernet connection to the internet or any (cloud) based Linux system to run the application code.
 
 * Solid State Relay (SSR) board 
 
   * for (up to a) 2 Amp load: use the **SainSmart** `2 channel 2A SSR board <http://www.sainsmart.com/arduino-compatibles-1/relay/solid-state-relay/sainsmart-2-channel-5v-solid-state-relay-module-board-omron-ssr-avr-dsp-arduino.html>`_
   * for (up to a) 5 Amp load: use the **SainSmart** `2 channel 5A SSR board <http://www.sainsmart.com/arduino-compatibles-1/relay/solid-state-relay/sainsmart-2-channel-ssr-2f-solid-state-relay-3v-32v-5a-for-avr-dsp-arduino-mega-uno-r3.html/>`_
 
-* RPi battery backed RTC module
-
-  * **RasClock** `Raspberry Pi Real Time Clock Module <http://afterthoughtsoftware.com/products/rasclock>`_
-  * Available from `Acme Unlimited <http://store.acmeun.com/products/rasclock-raspberry-pi-real-time-clock-module.html>`_
-
 * Appropriate fuse and fuse holder (Radio Shack or your local hardware store)
-* Appropriate (plastic) box
 
-Validation and Testing
+Software Installation
+---------------------
+
+The application code runs on any Python 2.7.n version of Python.  Please install pip to manage the installation of the Python dependencies.  Note: there are many internet resources to describe how-to intall pip.
+
+Installing Autolight-Photon is as simple as (running):
+
+* git clone git@github.com:alhopper/autolight-photon.git
+
+* Autolight requires the installation of some python library/module dependendies.  Install them as follows:
+
+  * sudo pip install ephem
+  * sudo pip install librato-metrics
+  * sudo pip install apscheduler==2.1.2
+
+* Install the relay application on the Photon using the particle.io tools
+
+* Sensitive data like the API key to access Librato and the keys used to access your Photon are stored in environment variables - rather than being hard-coded in the application code.  On a linux box (or the RPi), these environment variables are usually defined in $HOME/.bash_profile.   Here is a sample of what they should look like (using bogus values):
+
+  export LIBRATOKEY=abcdef1234abcdef1234abcdef2134234234234abcd23423423abcdef2134234
+  export PHOTONID=233333333344444445555555
+  export PARTICLEIOACCESS=abcdef7444455555abcdef3333333abcdef32234
+
+* to test the application, run it first from the command line as follows:
+   
+  * ./securitylight.py
+
+* after fixing any problems, you can run it as a background process with a command like:
+
+  * nohup ./securitylight.py >/dev/null 2>&1  &
+
+
+Validatio nand Testing
 ----------------------
 
 The codebase is small and simple and while there is never an excuse for a lack of automated 
