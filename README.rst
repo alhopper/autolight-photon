@@ -27,25 +27,27 @@ available - but it's much more fun to build it yourself.
 Design Goals
 ------------
 
-The RPi Sunrise/Sunset should meet the following goals; it should:
+The AutoLigh-Photon project should meet the following goals; it should:
 
 * have a minimum number of mechanical parts for reliability.  
 
-  * *solution:* use a Solid State Relay (SSR)
+  * *solution:* use a Solid State Relay (SSR).
 
-* maintain accurate time
+* maintain accurate time.
 
   * *solution* configure Network Time Protocol (NTP) on the server running the application.
 
 * given an connection to the internet it should log its actions - preferably via an on-line logging service.
 
-  * *solution:* use **PaperTrail** (see below)
+  * *solution:* use **PaperTrail** (see below).
 
 * given an internet connection, it should provide a visual *heartbeat*, preferably via an online service, so that it's *health* status can be quickly verified.
 
-  * *solution:* use **Librato** (see below)
+  * *solution:* use **Librato** (see below).
 
-* be low-cost
+* be low-cost.
+
+  * A Raspberry Pi board costs about $35 + flash card and USB type power supply (and a silly case).  A cloud-based Linux instance running 7x24 on Amazon Web Services (Micro T2 intance running Amazon Linux) will cost approx $6.50/month and is also available for free, under the `Free Tier program <https://aws.amazon.com/free/>`_ for one year.  On `Google Cloud Platform <https://cloud.google.com/compute/#pricing>`_ an f1-micro instance running 7x24 will cost you less than $6/month.  The autolight application uses very little CPU and memory resources - too little to be even worth the time to measure!  
 
 * be reasonably safe - from an electrical standpoint.
 
@@ -61,26 +63,26 @@ The RPi Sunrise/Sunset should meet the following goals; it should:
 
 This project would not be possible without the following *awesome* Python modules:
 
-* **PyEphem** `provides an ephem Python package for performing high-precision astronomy computations <https://pypi.python.org/pypi/pyephem//>`_
-* **APScheduler** `Advanced Python Scheduler <https://pypi.python.org/pypi/APScheduler/2.1.1/>`_
+* **PyEphem** `provides an ephem Python package for performing high-precision astronomy computations. <https://pypi.python.org/pypi/pyephem//>`_
+* **APScheduler** `Advanced Python Scheduler. <https://pypi.python.org/pypi/APScheduler/2.1.1/>`_
 
 Recommended Parts List
 ----------------------
 
 * RPi Model B with an ethernet connection to the internet *or* any (cloud) based Linux system to run the application code.
 
-* A **Particle Photon** `WiFi based controller board <https://store.particle.io/?product=particle-photon>`_
+* A **Particle Photon** `WiFi based controller board. <https://store.particle.io/?product=particle-photon>`_
 
 * Solid State Relay (SSR) board 
 
-  * for (up to a) 2 Amp load: use the **SainSmart** `2 channel 2A SSR board <http://www.sainsmart.com/arduino-compatibles-1/relay/solid-state-relay/sainsmart-2-channel-5v-solid-state-relay-module-board-omron-ssr-avr-dsp-arduino.html>`_
-  * for (up to a) 5 Amp load: use the **SainSmart** `2 channel 5A SSR board <http://www.sainsmart.com/arduino-compatibles-1/relay/solid-state-relay/sainsmart-2-channel-ssr-2f-solid-state-relay-3v-32v-5a-for-avr-dsp-arduino-mega-uno-r3.html/>`_
+  * for (up to a) 2 Amp load: use the **SainSmart** `2 channel 2A SSR board. <http://www.sainsmart.com/arduino-compatibles-1/relay/solid-state-relay/sainsmart-2-channel-5v-solid-state-relay-module-board-omron-ssr-avr-dsp-arduino.html>`_
+  * for (up to a) 5 Amp load: use the **SainSmart** `2 channel 5A SSR board. <http://www.sainsmart.com/arduino-compatibles-1/relay/solid-state-relay/sainsmart-2-channel-ssr-2f-solid-state-relay-3v-32v-5a-for-avr-dsp-arduino-mega-uno-r3.html/>`_
 
 * as an alternative to the SSR you can use a Mechanical Relay board with high quality relays.  Here are two alternatives:
 
-  * A **Particle Relay Shield** `Has a socket for the Photon, 4 relays and a single power connector <https://store.particle.io/?product=relay-shield>`_
+  * A **Particle Relay Shield** `Has a socket for the Photon, 4 relays and a single power connector. <https://store.particle.io/?product=relay-shield>`_
 
-  * A **SainSmart** `2 channel 5 Volt relay board using high quality OMRON relays (similar to those used on the Particle Relay Shield ) <http://www.sainsmart.com/sainsmart-omron-5v-relay-opto-couple-for-arduino-uno-mega2560-r3-raspberry-pi-arm.html>`_
+  * A **SainSmart** `2 channel 5 Volt relay board using high quality OMRON relays (similar to those used on the Particle Relay Shield). <http://www.sainsmart.com/sainsmart-omron-5v-relay-opto-couple-for-arduino-uno-mega2560-r3-raspberry-pi-arm.html>`_
 
   * Note that if you don't use the Particle Relay Shield and you select a relay board that requires 12 volts, you'll need a 5 Volt power supply for the Photon and a 12 Volt supply for a (12 Volt) relay board.  Also - SainSmart has other relay boards that will work - but the relays are not as good as the OMRON relays you see recommended above.  
   
@@ -93,7 +95,10 @@ The application code runs on any Python 2.7.n version of Python.  Please install
 
 Installing Autolight-Photon is as simple as (running):
 
-* git clone git@github.com:alhopper/autolight-photon.git
+* clone the autolight-photon project repo on github.com:
+::
+
+  git clone git@github.com:alhopper/autolight-photon.git
 
 * Autolight requires the installation of some python library/module dependendies.  Install them as follows:
 ::
@@ -112,12 +117,14 @@ Installing Autolight-Photon is as simple as (running):
   export PARTICLEIOACCESS=abcdef7444455555abcdef3333333abcdef32234
 
 * to test the application, run it first from the command line as follows:
+::
    
-  * ./securitylight.py
+  ./securitylight.py
 
 * after fixing any problems, you can run it as a background process with a command like:
+::
 
-  * nohup ./securitylight.py >/dev/null 2>&1  &
+  nohup ./securitylight.py >/dev/null 2>&1  &
 
 
 Validatio nand Testing
