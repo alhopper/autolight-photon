@@ -47,7 +47,7 @@ The AutoLigh-Photon project should meet the following goals; it should:
 
 * be low-cost.
 
-  * A Raspberry Pi board costs about $35 + flash card and USB type power supply (and a silly case).  A cloud-based Linux instance running 7x24 on Amazon Web Services (Micro T2 intance running Amazon Linux) will cost approx $6.50/month and is also available for free, under the `Free Tier program <https://aws.amazon.com/free/>`_ for one year.  On `Google Cloud Platform <https://cloud.google.com/compute/#pricing>`_ an f1-micro instance running 7x24 will cost you less than $6/month.  The autolight application uses very little CPU and memory resources - too little to be even worth the time to measure!  
+  * A Raspberry Pi board costs about $35 + flash card and USB type power supply (and a silly case).  A cloud-based Linux instance running 7x24 on Amazon Web Services (Micro T2 intance running Amazon Linux) will cost approx $6.50/month and is also available for free, under the `Free Tier program <https://aws.amazon.com/free/>`_ for one year.  On `Google Cloud Platform <https://cloud.google.com/compute/#pricing>`_ an f1-micro instance running 7x24 will cost you less than $6/month.  The autolight application uses very little CPU and memory resources - too little to be even worth the time to measure!  But don't worry - you'll find other uses for your cloud instance ... That's a given!  :)
 
 * be reasonably safe - from an electrical standpoint.
 
@@ -127,7 +127,7 @@ Installing Autolight-Photon is as simple as (running):
   nohup ./securitylight.py >/dev/null 2>&1  &
 
 
-Validatio nand Testing
+Validation and Testing
 ----------------------
 
 The codebase is small and simple and while there is never an excuse for a lack of automated 
